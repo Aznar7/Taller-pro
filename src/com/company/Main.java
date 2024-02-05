@@ -1,10 +1,13 @@
 package com.company;
 
 import java.util.Scanner;
+import java.util.ArrayList;
+
 
 public class Main {
 
     Scanner input = new Scanner(System.in);
+    ArrayList<String[]> clients = new ArrayList<>();
 
 
 
@@ -29,10 +32,13 @@ public class Main {
 
             if (input.hasNextInt()){
                 menuItem = input.nextInt();
+
+                input.nextLine();
+
                 switch (menuItem){
                     case 1:
                         System.out.println("Has triat donar d’alta nou client....");
-                        //insert code here
+                        registrarClient();
                         break;
                     case 2:
                         System.out.println("Has triat donar d’alta nou mecànic....");
@@ -62,6 +68,59 @@ public class Main {
 
     }
 
-    //insert code here
+    public String llegirDNI(){
+
+        String DNI;
+        int valid = 0;
+
+        do {
+
+            System.out.println("Introdueix el DNI del nou client: ");
+            DNI = input.nextLine();
+
+            valid = 0;
+
+            for (int i = 0; i < clients.size(); i++) {
+                if ( clients.get(i)[0].equalsIgnoreCase(DNI) ) {
+                    valid += 1;
+
+                    System.out.println("Aquest DNI ja esta registrat per l'usuari numero: " + i);
+
+                }
+            }
+
+        } while ( valid != 0 );
+
+        return DNI;
+    }
+
+    public String llegirNom(){
+
+        String nom;
+        int valid = 0;
+
+        do {
+
+            valid = 0;
+
+            System.out.println( "Introdueix el Nom del nou client: " );
+            nom = input.nextLine();
+
+            if (nom.equalsIgnoreCase("") || nom.equalsIgnoreCase(" ")) {
+                valid += 1;
+                System.out.println("Has de omplir aquest espai...");
+            }
+
+        } while ( valid != 0);
+
+        return nom;
+
+    }
+
+    public void registrarClient() {
+
+        clients.add(new String[]{llegirDNI(), llegirNom()});
+
+    }
 
 }
