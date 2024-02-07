@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -61,7 +62,10 @@ public class Main {
         }while(menuItem!=5);
 
     }
+    ArrayList<ArrayList<Integer>> Vehiculos = new ArrayList<>();
 
-    //insert code here
-
+    public static boolean validarMatricula(String input) {
+        String verifyMatricula = "\\d{4}[a-zA-Z]{3}";
+        return input.matches(verifyMatricula);
+    }
 }
