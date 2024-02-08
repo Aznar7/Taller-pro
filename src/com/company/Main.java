@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -37,6 +38,7 @@ public class Main {
                         break;
                     case 2:
                         System.out.println("Has triat donar d’alta nou mecànic....");
+                        vehiculo();
                         //insert code here
                         break;
                     case 3:
@@ -62,10 +64,73 @@ public class Main {
         }while(menuItem!=5);
 
     }
-    ArrayList<ArrayList<Integer>> Vehiculos = new ArrayList<>();
 
-    public static boolean validarMatricula(String input) {
+    public static void vehiculo() {
+        ArrayList<ArrayList<String>> vehiculos = new ArrayList<>();
+        Scanner input = new Scanner(System.in);
+
+        if (clients.isEmpty()) {
+            System.out.println("No hi ha cap client donat d'alta \nAbans de inserir un vehicle has de donar d'alta un client.");
+            return;
+        } else {
+            System.out.println("Escoje el nif del que sera el propietari del vehicle:");
+            for (ArrayList<Integer> fila : clients) {
+                String columna2 = String.valueOf(fila.get(1));
+                System.out.println("DNI's: " + columna2);
+            }
+        }
+        String nif = input.nextLine();
+
+        // Obtener el índice de la próxima fila disponible en la lista de vehículos
+        int indiceFila = 0;
+        for (ArrayList<String> fila : vehiculos) {
+            if (fila.isEmpty()) {
+                break;
+            }
+            indiceFila++;
+        }
+
+        // Asegurarse de que haya suficientes filas en la lista de vehículos
+        while (vehiculos.size() <= indiceFila) {
+            vehiculos.add(new ArrayList<>());
+        }
+
+        String matricula;
+
+        do {
+            boolean matriculaExiste = false;
+            System.out.println("Introdueix la matrícula del vehicle:");
+            matricula = input.nextLine();
+
+            for (ArrayList<String> vehiculo : vehiculos) {
+                if (!vehiculo.isEmpty() && Objects.equals(matricula, vehiculo.get(0))) {
+                    matriculaExiste = true;
+                    break;
+                }
+            }
+
+            if (!matriculaExiste) {
+                System.out.println("Matrícula Afegida.");
+                vehiculos.get(indiceFila).add(matricula);
+                System.out.println("Introdueix el model vehicle:");
+                String model = input.nextLine();
+                if (estaVacio(model)) {
+                    System.out.println("El model no pot estar buit.");
+                    return;
+                }
+                vehiculos.get(indiceFila).add(model);
+                vehiculos.get(indiceFila).add(nif);
+            } else {
+                System.out.println("Aquesta matrícula no es valida o ja existeix.");
+            }
+        } while (validarMatricula(matricula));
+    }
+
+    private static boolean validarMatricula(String matricula) {
         String verifyMatricula = "\\d{4}[a-zA-Z]{3}";
-        return input.matches(verifyMatricula);
+        return matricula.matches(verifyMatricula);
+    }
+    private static boolean estaVacio(String input) {
+        return input.isEmpty();
     }
 }
