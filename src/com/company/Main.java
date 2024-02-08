@@ -8,6 +8,7 @@ public class Main {
 
     Scanner input = new Scanner(System.in);
     ArrayList<String[]> clients = new ArrayList<>();
+    ArrayList<String[]> mecanics = new ArrayList<>();
 
 
 
@@ -42,7 +43,7 @@ public class Main {
                         break;
                     case 2:
                         System.out.println("Has triat donar d’alta nou mecànic....");
-                        //insert code here
+                        registrarMecanic();
                         break;
                     case 3:
                         System.out.println("Has triat introduir nou vehicle....");
@@ -68,6 +69,10 @@ public class Main {
 
     }
 
+    private static boolean estaVacio(String input) {
+        return input.isEmpty();
+    }
+
     public String llegirDNI(){
 
         String DNI;
@@ -87,6 +92,9 @@ public class Main {
                     System.out.println("Aquest DNI ja esta registrat per l'usuari numero: " + i);
 
                 }
+                if (estaVacio(DNI)) {
+                    System.out.println("Has de omplir aquest espai");
+                }
             }
 
         } while ( valid != 0 );
@@ -103,10 +111,10 @@ public class Main {
 
             valid = 0;
 
-            System.out.println( "Introdueix el Nom del nou client: " );
+            System.out.println( "Introdueix el Nom: " );
             nom = input.nextLine();
 
-            if (nom.equalsIgnoreCase("") || nom.equalsIgnoreCase(" ")) {
+            if (estaVacio(nom) || nom.equalsIgnoreCase(" ")) {
                 valid += 1;
                 System.out.println("Has de omplir aquest espai...");
             }
@@ -117,9 +125,33 @@ public class Main {
 
     }
 
+    public String estaOcupat() {
+        String sino = "a";
+
+        do {
+            System.out.println("Esta el mecànic ocupat?  (si / no) ");
+            sino = input.nextLine();
+
+        } while (!sino.equalsIgnoreCase("si") && !sino.equalsIgnoreCase("no"));
+
+        if (sino.equalsIgnoreCase("si")) {
+            return "ocupat";
+        }
+        else {
+            return "lliure";
+        }
+
+    }
+
     public void registrarClient() {
 
         clients.add(new String[]{llegirDNI(), llegirNom()});
+
+    }
+
+    public void registrarMecanic() {
+
+        mecanics.add(new String[]{llegirNom(), estaOcupat()});
 
     }
 
