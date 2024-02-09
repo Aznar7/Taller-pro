@@ -175,9 +175,8 @@ public class Main {
             indiceFila++;
         }
 
-        // Asegurarse de que haya suficientes filas en la lista de vehículos
-        while (vehiculos.size() <= indiceFila) {
-            vehiculos.add(new ArrayList<>());
+        while (reparacions.size() <= indiceFila) {
+            reparacions.add(new ArrayList<>());
         }
 
         for (int i = 0; i < mecanics.size(); i++) {
@@ -191,6 +190,11 @@ public class Main {
             }
         }
     }
+    /**
+     * Verifica si un String está vacío.
+     * @param input El String a verificar.
+     * @return true si el String está vacío, false si no lo está.
+     */
     private static boolean estaVacio(String input) {
         return input.isEmpty();
     }
