@@ -143,6 +143,30 @@ public class Main {
 
     }
 
+    public String llegirCodi() {
+        int valid = 0;
+        String codi;
+
+        do {
+            valid = 0;
+
+            System.out.println("Escriu el codi del mecànic: ");
+            codi = input.nextLine();
+
+            for (int i=0; i < mecanics.size(); i++) {
+                if (mecanics.get(i)[0].equalsIgnoreCase(codi) || estaVacio(codi)) {
+                    valid += 1;
+                }
+            }
+
+            if (valid != 0) {
+                System.out.println("Escriu un numero valid que no hagi sigut ja introduit abans.");
+            }
+        } while ( valid != 0);
+
+        return codi;
+    }
+
     public void registrarClient() {
 
         clients.add(new String[]{llegirDNI(), llegirNom()});
@@ -151,8 +175,8 @@ public class Main {
 
     public void registrarMecanic() {
 
-        mecanics.add(new String[]{llegirNom(), estaOcupat()});
-
+        mecanics.add(new String[]{llegirCodi(), llegirNom(), estaOcupat()});
     }
+
 
 }
