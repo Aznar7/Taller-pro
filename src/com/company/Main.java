@@ -170,7 +170,7 @@ public class Main {
                 System.out.println("Escriu un numero valid que no hagi sigut ja introduit abans.");
             }
 
-            if (codi.matches("\\d{6}")) {
+            if (!codi.matches("\\d{6}")) {
                 System.out.println("Format incorrecte, has de posar 6 enters.");
                 valid += 1;
             }
