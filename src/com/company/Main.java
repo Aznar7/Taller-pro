@@ -62,7 +62,7 @@ public class Main {
             }else{
                 System.out.println("Opció no vàlida");
             }
-            input.nextLine();
+
             System.out.println("");
 
         }while(menuItem!=5);
@@ -92,9 +92,16 @@ public class Main {
                     System.out.println("Aquest DNI ja esta registrat per l'usuari numero: " + i);
 
                 }
-                if (estaVacio(DNI)) {
-                    System.out.println("Has de omplir aquest espai");
-                }
+            }
+
+            if (estaVacio(DNI)) {
+                System.out.println("Has de omplir aquest espai");
+                valid += 1;
+            }
+
+            if (!DNI.matches("\\d{8}[a-zA-Z]{1}")) {
+                System.out.println("Introdueix un DNI amb el format correcte");
+                valid += 1;
             }
 
         } while ( valid != 0 );
@@ -161,6 +168,11 @@ public class Main {
 
             if (valid != 0) {
                 System.out.println("Escriu un numero valid que no hagi sigut ja introduit abans.");
+            }
+
+            if (codi.matches("\\d{6}")) {
+                System.out.println("Format incorrecte, has de posar 6 enters.");
+                valid += 1;
             }
         } while ( valid != 0);
 
