@@ -73,6 +73,11 @@ public class Main {
         return input.isEmpty();
     }
 
+    /**
+     * Guarda un DNI de 8 enters i un caracter per consola
+     *
+     * @String DNI ( 8 int + 1 character )
+     */
     public String llegirDNI(){
 
         String DNI;
@@ -109,6 +114,11 @@ public class Main {
         return DNI;
     }
 
+    /**
+     * Guarda un Nom per consola
+     *
+     * @return String nom
+     */
     public String llegirNom(){
 
         String nom;
@@ -132,6 +142,11 @@ public class Main {
 
     }
 
+    /**
+     * Pregunta a l'usuari si el mecanic esta ocupat per consola
+     *
+     * @return boolean estaOcupat
+     */
     public String estaOcupat() {
         String sino = "a";
 
@@ -150,6 +165,11 @@ public class Main {
 
     }
 
+    /**
+     * Llegeix un codi de 6 enters per consola
+     *
+     * @return String codi ( 6 int )
+     */
     public String llegirCodi() {
         int valid = 0;
         String codi;
@@ -179,12 +199,19 @@ public class Main {
         return codi;
     }
 
+    /**
+     * Crea un arrayList de arrays sobre els clients
+     */
     public void registrarClient() {
 
         clients.add(new String[]{llegirDNI(), llegirNom()});
 
     }
 
+
+    /**
+     * Crea un arrayList de arrays sobre els mecanics
+     */
     public void registrarMecanic() {
 
         mecanics.add(new String[]{llegirCodi(), llegirNom(), estaOcupat()});
