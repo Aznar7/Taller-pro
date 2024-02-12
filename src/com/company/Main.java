@@ -9,8 +9,8 @@ public class Main {
     Scanner input = new Scanner(System.in);
 
 
-    static ArrayList<ArrayList<String>> reparacions = new ArrayList<>();
-    static ArrayList<ArrayList<String>> vehiculos = new ArrayList<>();
+    static ArrayList<String[]> reparacions = new ArrayList<>();
+    static ArrayList<String[]> vehicles = new ArrayList<>();
     static ArrayList<String[]> clients = new ArrayList<>();
     static ArrayList<String[]> mecanics = new ArrayList<>();
 
@@ -49,11 +49,11 @@ public class Main {
                         break;
                     case 3:
                         System.out.println("Has triat introduir nou vehicle....");
-                        vehiculo();
+                        registrarVehicle();
                         break;
                     case 4:
                         System.out.println("Has triat crear fitxa de nova reparació....");
-                        //insert code here
+                        registrarReparacio();
                         break;
                     case 5:
                         System.out.println("Sortint....");
@@ -71,9 +71,6 @@ public class Main {
 
     }
 
-    private static boolean estaVacio(String input) {
-        return input.isEmpty();
-    }
 
     public String llegirDNI(){
 
@@ -182,138 +179,229 @@ public class Main {
     }
 
     public void registrarClient() {
-
         clients.add(new String[]{llegirDNI(), llegirNom()});
-
     }
 
     public void registrarMecanic() {
-
         mecanics.add(new String[]{llegirCodi(), llegirNom(), estaOcupat()});
     }
 
-
     /**
-     * Añade un nuevo Vehiculo a la lista de vehículos.
+     * Retorna la matrícula del vehicle.
+     * @return La matrícula del vehicle.
      */
-    public static void vehiculo() {
-        ArrayList<ArrayList<String>> vehiculos = new ArrayList<>();
-        Scanner input = new Scanner(System.in);
+    public String llegirMatricula(){
+
+        String matricula;
+        int valid = 0;
+
+        do {
+
+            System.out.println("Introdueix la matricula del nou vehicle: ");
+            matricula = input.nextLine();
+
+            valid = 0;
+
+            for (int i = 0; i < vehicles.size(); i++) {
+                if ( vehicles.get(i)[0].equalsIgnoreCase(matricula) ) {
+                    valid += 1;
+
+                    System.out.println("Aquest DNI ja esta registrat per l'usuari numero: " + i);
+
+                }
+            }
+
+            if (estaVacio(matricula)) {
+                System.out.println("Has de omplir aquest espai");
+                valid += 1;
+            }
+
+            if (!matricula.matches("\\d{4}[a-zA-Z]{3}")) {
+                System.out.println("Introdueix una matricula amb el format correcte");
+                valid += 1;
+            }
+
+        } while ( valid != 0 );
+
+        return matricula;
+    }
+    /**
+     * Retorna el model del vehicle.
+     * @return El model del vehicle.
+     */
+    public String llegirModel(){
+
+        String model;
+        int valid = 0;
+
+        do {
+
+            valid = 0;
+
+            System.out.println( "Introdueix el Model del vehicle: " );
+            model = input.nextLine();
+
+            if (estaVacio(model) || model.equalsIgnoreCase(" ")) {
+                valid += 1;
+                System.out.println("Has de omplir aquest espai...");
+            }
+
+        } while ( valid != 0);
+
+        return model;
+
+    }
+    /**
+     * Retorna el DNI del propietari del vehicle.
+     * @return El DNI del propietari.
+     */
+    public String escollirDNI(){
+
+        String DNI;
+        int valid = 0;
+
+        do {
+            valid = 0;
+
+            System.out.println("Escoje el DNI del que sera el propietari del vehicle:");
+            for (int i = 0; i < clients.size(); i++) {
+                System.out.println("DNI" + ": " + i + " "  + clients.get(i)[0]);
+            }
+
+            System.out.println("Introdueix el numero del DNI:");
+            int num = input.nextInt();
+            DNI = clients.get(num)[0];
+
+            if (estaVacio(DNI)) {
+                System.out.println("Has de omplir aquest espai");
+                valid += 1;
+            }
+
+        } while ( valid != 0);
+
+        return DNI;
+
+    }
+    /**
+     * Registra un vehicle.
+     */
+    public void registrarVehicle() {
 
         if (clients.isEmpty()) {
             System.out.println("No hi ha cap client donat d'alta \nAbans de inserir un vehicle has de donar d'alta un client.");
             return;
-        } else {
-            System.out.println("Escoje el nif del que sera el propietari del vehicle:");
-            /*for (ArrayList<Integer> fila : clients) {
-                String columna2 = String.valueOf(fila.get(1));
-                System.out.println("DNI's: " + columna2);
-            }
-             */
-            for (int i = 0; i < clients.size(); i++) {
-                System.out.println("DNI: " + clients.get(i)[0]);
-            }
-        }
-        String nif = input.nextLine();
-
-        // Obtener el índice de la próxima fila disponible en la lista de vehículos
-        int indiceFila = 0;
-        for (ArrayList<String> fila : vehiculos) {
-            if (fila.isEmpty()) {
-                break;
-            }
-            indiceFila++;
         }
 
-        // Asegurarse de que haya suficientes filas en la lista de vehículos
-        while (vehiculos.size() <= indiceFila) {
-            vehiculos.add(new ArrayList<>());
-        }
+        vehicles.add(new String[]{llegirMatricula(), llegirModel(), escollirDNI()});
+    }
+    /**
+     * Retorna la matrícula del vehicle que es vol reparar.
+     * @return La matrícula del vehicle.
+     */
+    public String escollirMatricula(){
 
         String matricula;
+        int valid = 0;
 
         do {
-            boolean matriculaExiste = false;
-            System.out.println("Introdueix la matrícula del vehicle:");
-            matricula = input.nextLine();
+            valid = 0;
 
-            for (ArrayList<String> vehiculo : vehiculos) {
-                if (!vehiculo.isEmpty() && Objects.equals(matricula, vehiculo.get(0))) {
-                    matriculaExiste = true;
-                    break;
+            System.out.println("Escolleix la matricula del vehicle que vols fer la reparacio:");
+            for (int i = 0; i < vehicles.size(); i++) {
+                System.out.println("Matricula" + ": " + i + " "  + vehicles.get(i)[0]);
+            }
+
+            System.out.println("Introdueix la posicio de la matricula:");
+            int num = input.nextInt();
+            input.nextLine();
+            matricula = vehicles.get(num)[0];
+
+            if (estaVacio(matricula)) {
+                System.out.println("Has de omplir aquest espai");
+                valid += 1;
+            }
+
+        } while ( valid != 0);
+
+        return matricula;
+
+    }
+    public String codiReparacio(){
+        String codi;
+        int valid = 0;
+
+        do {
+            valid = 0;
+            codi = "";
+
+            for (int i = 0; i < mecanics.size(); i++) {
+                if (Objects.equals(mecanics.get(i)[2], "lliure")) {
+                    codi = mecanics.get(i)[0];
+                } else if (Objects.equals(mecanics.get(i)[2], "ocupat")) {
+                    codi = mecanics.get(i)[0];
                 }
             }
 
-            if (!matriculaExiste) {
-                System.out.println("Matrícula Afegida.");
-                vehiculos.get(indiceFila).add(matricula);
-                System.out.println("Introdueix el model vehicle:");
-                String model = input.nextLine();
-                if (estaVacio(model)) {
-                    System.out.println("El model no pot estar buit.");
-                    return;
-                }
-                vehiculos.get(indiceFila).add(model);
-                vehiculos.get(indiceFila).add(nif);
-            } else {
-                System.out.println("Aquesta matrícula no es valida o ja existeix.");
+            if (estaVacio(codi)) {
+                System.out.println("Has de omplir aquest espai");
+                valid += 1;
             }
-        } while (validarMatricula(matricula));
+
+        } while ( valid != 0);
+        return codi;
+    }
+    /**
+     * Retorna l'estat de la reparació.
+     * @return "En curs" si hi ha un mecànic lliure, "Oberta" si no n'hi ha cap.
+     */
+    public String estatReparacio(){
+        String codi;
+        String estatReparacio;
+        int valid = 0;
+
+        do {
+            valid = 0;
+            codi = "";
+            estatReparacio = "";
+
+            for (int i = 0; i < mecanics.size(); i++) {
+                if (Objects.equals(mecanics.get(i)[2], "lliure")) {
+                    System.out.println("Hi ha un mecànic lliure, el codi del mecànic es: " + mecanics.get(i)[0]);
+                    mecanics.get(i)[2] = "ocupat";
+                    codi = mecanics.get(i)[0];
+                    estatReparacio = "En curs";
+                    System.out.println("Reparacio oberta amb el codi: " + codi + " i l'estat: " + estatReparacio);
+                } else if (Objects.equals(mecanics.get(i)[2], "ocupat")) {
+                    System.out.println("NO hi ha cap mecànic lliure.");
+                    codi = mecanics.get(i)[0];
+                    estatReparacio = "Oberta";
+                    System.out.println("Reparacio oberta amb el codi: " + codi + " i l'estat: " + estatReparacio);
+                }
+            }
+
+            if (estaVacio(estatReparacio)) {
+                System.out.println("Has de omplir aquest espai");
+                valid += 1;
+            }
+
+        } while ( valid != 0);
+        return estatReparacio;
+
     }
 
     /**
-     * Verifica que la matrícula tenga el formato correcto.
-     * @param matricula La matrícula a verificar.
-     * @return true si la matrícula es válida, false si no lo es.
+     * Registra una reparació.
      */
-    private static boolean validarMatricula(String matricula) {
-        String verifyMatricula = "\\d{4}[a-zA-Z]{3}";
-        return matricula.matches(verifyMatricula);
-    }
-    /**
-     * Añade una nueva reparación a la lista de reparaciones.
-     */
-    public static void reparacio() {
+    public void registrarReparacio() {
 
-        Scanner input = new Scanner(System.in);
-
-        if (vehiculos.isEmpty()) {
-            System.out.println("No hi ha cap vehicle donat d'alta \nAbans has de donar d'alta un vehicle.");
+        if (vehicles.isEmpty() && mecanics.isEmpty()) {
+            System.out.println("No hi ha cap vehicle o mecanic donat d'alta \nAbans de inserir una reparacio has de donar d'alta un vehicle o mecanic.");
             return;
-        } else {
-            System.out.println("Escriu la matricula del vehicle:");
-            for (ArrayList<String> fila : vehiculos) {
-                String columna2 = String.valueOf(fila.get(0));
-                System.out.println("Matricula: " + columna2);
-            }
-
-        }
-        String matricula = input.nextLine();
-
-        // Obtener el índice de la próxima fila disponible en la lista de vehículos
-        int indiceFila = 0;
-        for (ArrayList<String> fila : reparacions) {
-            if (fila.isEmpty()) {
-                break;
-            }
-            indiceFila++;
         }
 
-        while (reparacions.size() <= indiceFila) {
-            reparacions.add(new ArrayList<>());
-        }
-
-        for (int i = 0; i < mecanics.size(); i++) {
-            if (Objects.equals(mecanics.get(i)[2], "lliure")) {
-                System.out.println("Hi ha un mecànic lliure:");
-                mecanics.get(i)[2] = "ocupat";
-                String codi = mecanics.get(i)[0];
-                reparacions.get(indiceFila).add(matricula);
-                reparacions.get(indiceFila).add(codi);
-                reparacions.get(indiceFila).add("en curs");
-            }
-        }
+        reparacions.add(new String[]{escollirMatricula(), codiReparacio(), estatReparacio()});
     }
+
     /**
      * Verifica si un String está vacío.
      * @param input El String a verificar.
