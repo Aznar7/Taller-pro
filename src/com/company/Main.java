@@ -1,3 +1,10 @@
+/**
+ * TALLER DE REPARACIÓ DE VEHICLES
+ * Paul Aznar i Joshua Abril Pangan
+ * https://github.com/Aznar7/Taller-pro
+ * Aquest programa permet gestionar un taller de reparació de vehicles.
+ *
+ */
 package com.company;
 
 import java.util.ArrayList;
